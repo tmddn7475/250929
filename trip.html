@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>환율 기반 여행 추천</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      /* 간단한 컨테이너 너비 제한 */
+      .container {
+        max-width: 1100px;
+        margin: 0 auto;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-50 text-gray-800">
+    <!-- Header -->
+    <header class="bg-white shadow-sm">
+      <div class="container flex items-center justify-between py-4 px-4">
+        <div class="flex items-center gap-3">
+          <!-- 로고 아이콘 자리 표시 -->
+          <div
+            class="w-12 h-12 rounded-md bg-beige-200 flex items-center justify-center border"
+          >
+            <img
+              src="/assets/icon.png"
+              alt="로고"
+              class="w-10 h-10 object-contain"
+            />
+          </div>
+          <div class="font-semibold text-lg">환율트립</div>
+        </div>
+        <nav class="hidden md:flex items-center gap-6 text-sm text-gray-600">
+          <a href="#" class="hover:text-gray-900">홈</a>
+          <a href="#rates" class="hover:text-gray-900">환율 정보</a>
+          <a href="#destinations" class="hover:text-gray-900">추천 여행지</a>
+          <a href="#routes" class="hover:text-gray-900">루트 추천</a>
+          <a href="#myplan" class="hover:text-gray-900">내 여행 계획</a>
+        </nav>
+        <div class="hidden md:block">
+          <button class="px-4 py-2 rounded-md bg-indigo-600 text-white text-sm">
+            로그인
+          </button>
+        </div>
+        <div class="md:hidden">
+          <button class="p-2">☰</button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Hero -->
+    <section class="bg-gradient-to-r from-indigo-50 to-white py-16">
+      <div
+        class="container px-4 grid grid-cols-1 md:grid-cols-2 gap-8 items-center"
+      >
+        <div>
+          <h1 class="text-3xl md:text-4xl font-bold mb-4">
+            오늘의 환율로 가장 알맞은 여행지를 찾아보세요
+          </h1>
+          <p class="text-gray-600 mb-6">
+            출발 국가와 선호 통화를 입력하면 환율을 고려한 추천 여행지와 비용
+            추정, 최적 루트를 제안합니다.
+          </p>
+
+          <!-- 검색 바 -->
+          <form
+            id="searchForm"
+            class="bg-white rounded-lg shadow p-4 grid grid-cols-1 md:grid-cols-3 gap-3"
+          >
+            <select id="fromCountry" class="border rounded px-3 py-2">
+              <option value="KRW">대한민국 (KRW)</option>
+              <option value="USD">미국 (USD)</option>
+              <option value="EUR">유로존 (EUR)</option>
+            </select>
+            <select id="targetCurrency" class="border rounded px-3 py-2">
+              <option value="USD">USD</option>
+              <option value="EUR">EUR</option>
+              <option value="JPY">JPY</option>
+              <option value="THB">THB</option>
+              <option value="VND">VND</option>
+            </select>
+            <button
+              type="submit"
+              class="bg-indigo-600 text-white rounded px-4 py-2"
+            >
+              추천받기
+            </button>
+          </form>
+
+          <div id="quickInfo" class="mt-4 text-sm text-gray-600"></div>
+        </div>
+
+        <div class="hidden md:block">
+          <!-- 간단한 일러스트/지도 자리 -->
+          <div
+            class="w-full h-64 rounded-lg bg-gradient-to-br from-sky-100 to-indigo-50 flex items-center justify-center border"
+          >
+            <div class="text-center text-gray-500">지도 / 그래픽 영역</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 기능 카드 -->
+    <section class="container px-4 py-10">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div class="bg-white p-4 rounded-lg shadow-sm">
+          <div class="font-semibold mb-2">실시간 환율 확인</div>
+          <div class="text-sm text-gray-600">
+            현재 환율과 변동률을 확인합니다.
+          </div>
+        </div>
+        <div class="bg-white p-4 rounded-lg shadow-sm">
+          <div class="font-semibold mb-2">여행지 추천</div>
+          <div class="text-sm text-gray-600">
+            환율, 예산, 계절을 고려한 추천.
+          </div>
+        </div>
+        <div class="bg-white p-4 rounded-lg shadow-sm">
+          <div class="font-semibold mb-2">최적 루트 찾기</div>
+          <div class="text-sm text-gray-600">
+            환율 유리한 경유지를 포함한 루트.
+          </div>
+        </div>
+        <div class="bg-white p-4 rounded-lg shadow-sm">
+          <div class="font-semibold mb-2">맞춤 여행 계획</div>
+          <div class="text-sm text-gray-600">내 예산 기반 일정 생성.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 추천 여행지 섹션 -->
+    <section id="destinations" class="container px-4 pb-10">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-xl font-semibold">환율이 유리한 추천 여행지 TOP 5</h2>
+        <a href="#" class="text-sm text-indigo-600">전체 보기</a>
+      </div>
+
+      <div
+        id="destList"
+        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
+      >
+        <!-- JS로 카드 생성 -->
+      </div>
+    </section>
+
+    <!-- 환율 트렌드 섹션 -->
+    <section id="rates" class="container px-4 pb-12">
+      <h3 class="text-lg font-semibold mb-3">환율 트렌드</h3>
+      <div class="bg-white rounded-lg p-4 shadow-sm">
+        <canvas id="rateChart" height="120"></canvas>
+        <div class="text-xs text-gray-500 mt-2">
+          최근 7일 환율 변동 (샘플 데이터)
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t mt-8">
+      <div
+        class="container px-4 py-8 text-sm text-gray-600 flex flex-col md:flex-row justify-between"
+      >
+        <div>© 2025 환율트립</div>
+        <div class="flex gap-4 mt-3 md:mt-0">
+          <a href="#">이용약관</a>
+          <a href="#">개인정보 처리방침</a>
+          <a href="#">문의</a>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Scripts: 샘플 동작 (실제 환율 API 연동 필요) -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+      const sampleDestinations = [
+        {
+          country: "태국",
+          currency: "THB",
+          rate: 0.032,
+          estCost: "₩1,000,000",
+          flag: "🇹🇭",
+        },
+        {
+          country: "베트남",
+          currency: "VND",
+          rate: 0.005,
+          estCost: "₩900,000",
+          flag: "🇻🇳",
+        },
+        {
+          country: "일본",
+          currency: "JPY",
+          rate: 0.008,
+          estCost: "₩1,200,000",
+          flag: "🇯🇵",
+        },
+        {
+          country: "필리핀",
+          currency: "PHP",
+          rate: 0.02,
+          estCost: "₩850,000",
+          flag: "🇵🇭",
+        },
+        {
+          country: "터키",
+          currency: "TRY",
+          rate: 0.054,
+          estCost: "₩1,050,000",
+          flag: "🇹🇷",
+        },
+      ];
+
+      function renderDestinations(list) {
+        const container = document.getElementById("destList");
+        container.innerHTML = "";
+        list.forEach((d) => {
+          const card = document.createElement("div");
+          card.className =
+            "bg-white p-4 rounded-lg shadow-sm flex flex-col gap-3";
+          card.innerHTML = `
+          <div class="flex items-center justify-between">
+            <div class="text-lg font-semibold">${d.country} <span class="text-sm">${d.flag}</span></div>
+            <div class="text-sm text-gray-500">${d.currency}</div>
+          </div>
+          <div class="text-sm text-gray-600">환율: ${d.rate} / 예상 경비: <strong>${d.estCost}</strong></div>
+          <div class="flex gap-2 mt-2">
+            <button class="px-3 py-2 rounded bg-indigo-600 text-white text-sm">상세보기</button>
+            <button class="px-3 py-2 rounded border text-sm">추천 루트 보기</button>
+          </div>
+        `;
+          container.appendChild(card);
+        });
+      }
+      renderDestinations(sampleDestinations);
+
+      // 검색 핸들러 (샘플 로직)
+      document.getElementById("searchForm").addEventListener("submit", (e) => {
+        e.preventDefault();
+        const from = document.getElementById("fromCountry").value;
+        const to = document.getElementById("targetCurrency").value;
+        document.getElementById(
+          "quickInfo"
+        ).textContent = `${from} → ${to} 기준으로 추천을 생성합니다. (샘플)`;
+        // 실제: 환율 API 호출 후 추천 알고리즘 실행
+      });
+
+      // 차트 샘플 데이터
+      const ctx = document.getElementById("rateChart");
+      if (ctx) {
+        new Chart(ctx, {
+          type: "line",
+          data: {
+            labels: ["-6", "-5", "-4", "-3", "-2", "-1", "오늘"],
+            datasets: [
+              {
+                label: "USD/KRW",
+                data: [1300, 1295, 1298, 1302, 1290, 1298, 1301],
+                tension: 0.3,
+              },
+            ],
+          },
+          options: {
+            plugins: { legend: { display: false } },
+            scales: { y: { beginAtZero: false } },
+          },
+        });
+      }
+    </script>
+  </body>
+</html>
