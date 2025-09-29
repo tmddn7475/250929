@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>OpenAPI</title>
+  </head>
+  <body>
+    <form id="subwayForm">
+      <select name="routeName">
+        <option value="1호선">1호선</option>
+        <option value="2호선">2호선</option>
+        <option value="3호선">3호선</option>
+        <option value="4호선">4호선</option>
+      </select>
+
+      <input name="date" placeholder="date" />
+      <input name="stationName" type="text" placeholder="station" />
+      <button>fetch</button>
+    </form>
+
+    <script>
+      const subwayForm = document.querySelector("#subwayForm");
+      subwayForm.addEventListener("submit", fetchSubway);
+
+      async function fetchSubway() {
+        const myKey = "6a6e4a6a576a756e333877436b7074";
+
+        event.preventDefault();
+        const formData = new FormData(event.currentTarget);
+        const subway = formData.get("subwayForm");
+        const url = `http://openapi.seoul.go.kr:8088/${myKey}/json/CardSubwayStatsNew/1/5/${formData.get(
+          "date"
+        )}/${formData.get("routeName")}/${formData.get("stationName")}`;
+
+        const response = await fetch(url);
+        const data = await response.json();
+        console.log(data);
+      }
+    </script>
+  </body>
+</html>
